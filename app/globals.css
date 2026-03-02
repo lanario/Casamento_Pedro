@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Indie+Flower&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --invite-green-100: #a3c69c;
+  --invite-green-300: #8cae86;
+  --invite-green-500: #75976f;
+  --invite-green-700: #5e7f59;
+  --invite-green-900: #476742;
+  --background: #FAF5E2;
+  /* Títulos: Great Vibes */
+  --font-serif: "Great Vibes", cursive;
+  --font-script: "Great Vibes", cursive;
+  /* Restante do texto: Indie Flower */
+  --font-sans: "Roboto", cursive;
+}
+
+body {
+  background-color: var(--background);
+  @apply text-invite-green-900 selection:bg-invite-green-300 selection:text-white;
+}
