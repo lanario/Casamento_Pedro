@@ -1,42 +1,17 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import { CalendarDays, MapPin, Wine, MailOpen, Send } from "lucide-react";
-import { INVITE_COUPLE_NAMES, INVITE_TEMPLATE } from "@/lib/constants";
+import { CalendarDays, MailOpen, Send, MapPin, ExternalLink } from "lucide-react";
+import { INVITE_COUPLE_NAMES, INVITE_TEMPLATE, LOCATION_SECTION } from "@/lib/constants";
 import { PhotoAccentLeaf, BotanicalSprig } from "@/components/RealisticLeaves";
-
-const TILT_MAX_DEG = 10;
-const TILT_PERSPECTIVE = 1000;
+import { DressCodeSection } from "@/components/DressCodeSection";
+import { GuestManualSection } from "@/components/GuestManualSection";
 
 /**
  * Conteúdo do convite: cartão com moldura de folhagem, foto em arco, data 25/09/2026 19h.
  */
 function InviteTemplateContent() {
-  const ceremonyCardRef = useRef<HTMLAnchorElement>(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-
-  const handleCeremonyMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>) => {
-      const el = ceremonyCardRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const xNorm = (e.clientX - centerX) / (rect.width / 2);
-      const yNorm = (e.clientY - centerY) / (rect.height / 2);
-      setTilt({
-        y: Math.max(-1, Math.min(1, xNorm)) * TILT_MAX_DEG,
-        x: Math.max(-1, Math.min(1, -yNorm)) * TILT_MAX_DEG,
-      });
-    },
-    []
-  );
-
-  const handleCeremonyMouseLeave = useCallback(() => {
-    setTilt({ x: 0, y: 0 });
-  }, []);
-
   type RsvpStatus = "idle" | "loading" | "success" | "error";
   const [rsvpStatus, setRsvpStatus] = useState<RsvpStatus>("idle");
   const [rsvpMessage, setRsvpMessage] = useState("");
@@ -154,57 +129,11 @@ function InviteTemplateContent() {
         </div>
       </article>
 
-      {/* Grid Cerimônia + Recepção */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <a
-          ref={ceremonyCardRef}
-          href={INVITE_TEMPLATE.ceremonyMapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onMouseMove={handleCeremonyMouseMove}
-          onMouseLeave={handleCeremonyMouseLeave}
-          className="bg-[#FAF5E2] p-8 sm:p-12 rounded-[2rem] shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-invite-green-100/30 flex flex-col items-center text-center transition-[border-color,box-shadow,background-color] duration-300 hover:border-invite-green-300/60 hover:shadow-[0_6px_24px_rgb(0,0,0,0.06)] hover:bg-invite-green-100/5 relative overflow-hidden block no-underline text-inherit"
-          style={{
-            transform: `perspective(${TILT_PERSPECTIVE}px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-            transformStyle: "preserve-3d",
-            transition: "transform 0.15s ease-out",
-          }}
-        >
-          <div className="absolute top-0 right-0 p-4 text-invite-green-100/30 pointer-events-none">
-            <BotanicalSprig width={40} height={60} className="rotate-45" />
-          </div>
-          <div className="w-16 h-16 rounded-2xl bg-invite-green-100/10 flex items-center justify-center mb-6 text-invite-green-500 relative z-10">
-            <MapPin className="w-8 h-8" strokeWidth={1.5} />
-          </div>
-          <h3 className="text-2xl sm:text-3xl font-light font-serif tracking-tight text-invite-green-900 mb-3 relative z-10">
-            {INVITE_TEMPLATE.ceremonyTitle}
-          </h3>
-          <p className="text-xl sm:text-2xl font-normal text-invite-green-900 mb-2 relative z-10">
-            {INVITE_TEMPLATE.ceremonyVenue}
-          </p>
-          <p className="text-lg sm:text-xl font-extralight text-invite-green-700 leading-relaxed relative z-10">
-            {INVITE_TEMPLATE.ceremonyAddress}
-          </p>
-        </a>
+      {/* Traje sugerido */}
+      <DressCodeSection />
 
-        <article className="bg-[#FAF5E2] p-8 sm:p-12 rounded-[2rem] shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-invite-green-100/30 flex flex-col items-center text-center transition-all duration-300 hover:border-invite-green-300/60 relative overflow-hidden">
-          <div className="absolute top-0 left-0 p-4 text-invite-green-100/30 pointer-events-none">
-            <BotanicalSprig width={40} height={60} className="-rotate-45" />
-          </div>
-          <div className="w-16 h-16 rounded-2xl bg-invite-green-100/10 flex items-center justify-center mb-6 text-invite-green-500 relative z-10">
-            <Wine className="w-8 h-8" strokeWidth={1.5} />
-          </div>
-          <h3 className="text-2xl sm:text-3xl font-light font-serif tracking-tight text-invite-green-900 mb-3 relative z-10">
-            {INVITE_TEMPLATE.receptionTitle}
-          </h3>
-          <p className="text-xl sm:text-2xl font-normal text-invite-green-900 mb-2 relative z-10">
-            {INVITE_TEMPLATE.receptionVenue}
-          </p>
-          <p className="text-lg sm:text-xl font-extralight text-invite-green-700 leading-relaxed relative z-10">
-            {INVITE_TEMPLATE.receptionNote}
-          </p>
-        </article>
-      </div>
+      {/* Manual dos convidados */}
+      <GuestManualSection />
 
       {/* Seção RSVP */}
       <article className="bg-invite-green-700 rounded-[2.5rem] shadow-lg border border-invite-green-900/20 overflow-hidden text-white relative">
@@ -323,6 +252,48 @@ function InviteTemplateContent() {
           )}
         </div>
       </article>
+
+      {/* Localização — mapa interativo (card no final da página) */}
+      <article className="bg-[#FAF5E2] p-6 sm:p-10 rounded-[2rem] shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-invite-green-100/30 overflow-hidden relative">
+        <div className="absolute top-0 right-0 p-4 text-invite-green-100/30 pointer-events-none">
+          <BotanicalSprig width={40} height={60} className="rotate-45" />
+        </div>
+        <div className="relative z-10 text-center mb-6">
+          <h2 className="text-2xl sm:text-3xl font-light font-serif tracking-tight text-invite-green-900">
+            {LOCATION_SECTION.title}
+          </h2>
+          <p className="text-base sm:text-lg font-extralight text-invite-green-700 mt-1">
+            {LOCATION_SECTION.subtitle}
+          </p>
+        </div>
+        <div className="relative z-10 rounded-xl overflow-hidden border border-invite-green-200/40 shadow-sm aspect-[4/3] min-h-[240px] sm:min-h-[280px]">
+          <iframe
+            title="Mapa do local da cerimônia e recepção"
+            src={`https://www.google.com/maps?q=${encodeURIComponent(INVITE_TEMPLATE.locationAddress)}&z=16&output=embed`}
+            className="absolute inset-0 w-full h-full border-0"
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+        <p className="relative z-10 mt-6 text-base font-extralight text-invite-green-800">
+          {INVITE_TEMPLATE.ceremonyVenue} — {INVITE_TEMPLATE.ceremonyAddress}
+        </p>
+      </article>
+
+      {/* Footer — Como chegar */}
+      <footer className="pt-4 pb-8 sm:pb-12 text-center">
+        <a
+          href={INVITE_TEMPLATE.ceremonyMapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-invite-green-700 hover:text-invite-green-900 font-normal text-sm sm:text-base transition-colors"
+        >
+          <MapPin className="w-4 h-4 shrink-0" strokeWidth={2} />
+          {LOCATION_SECTION.ctaButton}
+          <ExternalLink className="w-4 h-4 shrink-0 opacity-80" strokeWidth={2} />
+        </a>
+      </footer>
     </main>
   );
 }

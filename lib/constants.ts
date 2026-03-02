@@ -7,9 +7,9 @@ export const INVITE_COUPLE_NAMES = {
   groom: "Pedro",
   bride: "Marcelle",
   /** Exibição principal: "Pedro & Marcelle" */
-  display: " Marcelle & Pedro",
+  display: " Marcelle  &  Pedro",
   /** Formato curto para assinaturas ou rodapé */
-  short: "Marcelle & Pedro",
+  short: "Marcelle  &  Pedro",
 } as const;
 
 export const INVITE_TEXTS = {
@@ -55,9 +55,11 @@ export const INVITE_TEMPLATE = {
   ceremonyTitle: "Cerimônia",
   ceremonyVenue: "Rua Paulo de Frontin, 36",
   ceremonyAddress: "Andrade de Araujo",
-  /** URL do Google Maps para o local da cerimônia */
+  /** URL do Google Maps para o local da cerimônia (abrir em nova aba) */
   ceremonyMapsUrl:
     "https://www.google.com/maps/search/?api=1&query=Rua+Paulo+de+Frontin+36+Andrade+de+Araujo",
+  /** Endereço completo para embed do mapa (cerimônia e recepção no mesmo local) */
+  locationAddress: "Rua Paulo de Frontin, 36 - Andrade de Araujo",
   receptionTitle: "Recepção",
   receptionVenue: "Mesmo local",
   receptionNote: "Jantar e festa em seguida à cerimônia",
@@ -68,4 +70,44 @@ export const INVITE_TEMPLATE = {
   rsvpDecline: "Não poderei comparecer",
   rsvpSend: "Enviar resposta",
   rsvpDietNote: "Informe-nos sobre restrições alimentares, se houver.",
+} as const;
+
+/** Textos da seção Localização */
+export const LOCATION_SECTION = {
+  title: "Localização",
+  subtitle: "Encontre o caminho até nós",
+  ctaButton: "Como chegar",
+} as const;
+
+/** Manual dos Convidados — regras/etiqueta (sem ícones) */
+export const GUEST_MANUAL = {
+  title: "Manual dos convidados",
+  items: [
+    "Confirme sua presença",
+    "Branco é a cor da noiva",
+    "Aguarde a liberação da mesa de doces",
+    "Convidado não convida",
+    "Não atrapalhe os fotógrafos",
+    "Participe da cerimônia",
+    "Aproveite bastante",
+    "Não leve a decoração para casa",
+    "Não atrase, seja pontual",
+    "Não saia sem se despedir dos noivos",
+  ] as const,
+} as const;
+
+/** Textos da seção Traje Sugerido */
+export const DRESS_CODE = {
+  title: "Traje sugerido",
+  avoidInstruction: "Pedimos apenas que evitem as seguintes cores",
+  whiteNote: "Bom, acho que dispensa-se dizer a respeito do branco kkkk",
+  comfortAdvice:
+    "Vistam-se da forma que se sentirem mais confortáveis, mas não se esqueçam que vão dançar bastante",
+  disclaimer: "Cores meramente ilustrativas",
+  colors: [
+    { name: "Verde oliva", hex: "#6B805B" },
+    { name: "Bege", hex: "#F0EDD1" },
+    { name: "Marrom", hex: "#A14E0C" },
+    { name: "Terracota", hex: "#DB5A3E" },
+  ] as const,
 } as const;
