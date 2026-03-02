@@ -45,7 +45,7 @@ function GuestManualSection() {
       </div>
 
       <div className="relative z-10">
-        <h2 className="text-2xl sm:text-3xl font-light font-serif tracking-tight text-invite-green-900 uppercase text-center mb-8">
+        <h2 className="text-2xl sm:text-3xl font-light font-serif tracking-tight text-invite-green-900 text-center mb-8">
           {GUEST_MANUAL.title}
         </h2>
 

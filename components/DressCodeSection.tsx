@@ -17,7 +17,7 @@ function DressCodeSection() {
       </div>
 
       <div className="relative z-10 w-full max-w-xl mx-auto space-y-6">
-        <h2 className="text-2xl sm:text-3xl font-light font-serif tracking-tight text-invite-green-900 uppercase">
+        <h2 className="text-2xl sm:text-3xl font-light font-serif tracking-tight text-invite-green-900">
           {DRESS_CODE.title}
         </h2>
 
@@ -51,7 +51,7 @@ function DressCodeSection() {
           {DRESS_CODE.comfortAdvice}
         </p>
 
-        <p className="text-xs sm:text-sm font-extralight text-invite-green-600 uppercase tracking-wider">
+        <p className="text-xs sm:text-sm font-extralight text-invite-green-600 tracking-wider">
           {DRESS_CODE.disclaimer}
         </p>
       </div>
