@@ -1,15 +1,23 @@
-/**
- * Página do convite: envelope fechado que, ao abrir, revela o conteúdo no formato do template.
- */
-import { LetterEnvelope } from "@/components/LetterEnvelope";
-import { InviteTemplateContent } from "@/components/InviteTemplateContent";
+import SiteLogo from "@/components/SiteLogo";
+import HeroSection from "@/components/HeroSection";
+import InfoSection from "@/components/InfoSection";
+import GuestManualSection from "@/components/GuestManualSection";
+import GiftListSection from "@/components/GiftListSection";
+import RsvpSection from "@/components/RsvpSection";
+import LocationSection from "@/components/LocationSection";
+import SiteFooter from "@/components/SiteFooter";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen min-w-0">
-      <LetterEnvelope isOpen={false}>
-        <InviteTemplateContent />
-      </LetterEnvelope>
-    </div>
+    <main>
+      <SiteLogo />
+      <HeroSection />
+      <InfoSection />
+      <GuestManualSection />
+      <GiftListSection />
+      <RsvpSection />
+      <LocationSection />
+      <SiteFooter />
+    </main>
   );
 }

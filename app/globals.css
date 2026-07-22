@@ -1,24 +1,424 @@
-@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Indie+Flower&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --invite-green-100: #a3c69c;
-  --invite-green-300: #8cae86;
-  --invite-green-500: #75976f;
-  --invite-green-700: #5e7f59;
-  --invite-green-900: #476742;
-  --background: #FAF5E2;
-  /* Títulos: Great Vibes */
-  --font-serif: "Great Vibes", cursive;
-  --font-script: "Great Vibes", cursive;
-  /* Restante do texto: Indie Flower */
-  --font-sans: "Roboto", cursive;
+  --cream: #faf5e2;
+  --sage-100: #a3c69c;
+  --sage-300: #8cae86;
+  --sage-500: #75976f;
+  --sage-700: #5e7f59;
+  --sage-900: #476742;
+  --sage-950: #2e4529;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--background);
-  @apply text-invite-green-900 selection:bg-invite-green-300 selection:text-white;
+  background-color: var(--cream);
+  color: var(--sage-900);
+  @apply selection:bg-sage-300 selection:text-white;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Pin pulsante da seção de localização */
+@keyframes pin-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+.pin-ring {
+  animation: pin-pulse 2.2s ease-out infinite;
+}
+
+.pin-ring--delayed {
+  animation-delay: 1.1s;
+}
+
+/* RSVP — coração animado do "aceito" (adaptado de Uiverse.io by catraco) */
+.heart-toggle {
+  --heart-color: #e0313f;
+  position: relative;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.heart-toggle .svg-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.heart-toggle .svg-outline,
+.heart-toggle .svg-filled {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.heart-toggle .svg-outline {
+  fill: rgba(250, 245, 226, 0.85);
+  transition: fill 0.3s;
+}
+
+.heart-toggle.is-checked .svg-outline {
+  fill: var(--heart-color);
+}
+
+.heart-toggle .svg-filled {
+  fill: var(--heart-color);
+  display: none;
+  animation: rsvp-heart-filled 1s;
+}
+
+.heart-toggle .svg-celebrate {
+  position: absolute;
+  left: calc(50% - 32px);
+  top: calc(50% - 32px);
+  width: 64px;
+  height: 64px;
+  display: none;
+  pointer-events: none;
+  stroke: var(--heart-color);
+  fill: var(--heart-color);
+  stroke-width: 2px;
+  animation: rsvp-heart-celebrate 0.5s forwards;
+}
+
+.heart-toggle.is-checked .svg-filled,
+.heart-toggle.is-checked .svg-celebrate {
+  display: block;
+}
+
+@keyframes rsvp-heart-filled {
+  0% {
+    transform: scale(0);
+  }
+  25% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1);
+    filter: brightness(1.5);
+  }
+}
+
+@keyframes rsvp-heart-celebrate {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.5);
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* RSVP — X animado do "recusar" (adaptado de Uiverse.io by Pankaj-Meharchandani) */
+.x-toggle {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.x-toggle .x-mark {
+  position: absolute;
+  inset: 0;
+  background: rgba(250, 245, 226, 0.1);
+  border: 2px solid rgba(250, 245, 226, 0.6);
+  border-radius: 0.4rem;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.15);
+  transition:
+    all 0.3s ease,
+    transform 0.2s ease;
+}
+
+.rsvp-option:hover .x-mark {
+  border-color: rgba(250, 245, 226, 0.9);
+}
+
+.x-toggle .x-mark::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 3px;
+  background: transparent;
+  border-radius: 4px;
+  transform: translate(-50%, -50%) scale(0);
+  transition:
+    transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+    background 0.2s ease;
+}
+
+.x-toggle .x-mark::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3px;
+  height: 12px;
+  background: transparent;
+  border-radius: 4px;
+  transform: translate(-50%, -50%) scale(0);
+  transition:
+    transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+    background 0.2s ease;
+}
+
+.x-toggle.is-checked .x-mark {
+  background: linear-gradient(135deg, #f44336, #ef5350);
+  border-color: #d32f2f;
+  box-shadow:
+    0 0 8px rgba(244, 67, 54, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  animation: rsvp-x-bounce 0.4s ease-out;
+}
+
+.x-toggle.is-checked .x-mark::before {
+  background: #ffffff;
+  transform: translate(-50%, -50%) scale(1) rotate(-45deg);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+}
+
+.x-toggle.is-checked .x-mark::after {
+  background: #ffffff;
+  transform: translate(-50%, -50%) scale(1) rotate(-45deg);
+  transition-delay: 0.1s;
+}
+
+@keyframes rsvp-x-bounce {
+  0% {
+    transform: scale(0.7);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Botão da lista de presentes — glow/sparkle (adaptado de Uiverse.io by MuhammadHasann) */
+.gift-sparkle-btn {
+  --border-radius: 9999px;
+  --transition: 0.3s ease-in-out;
+
+  cursor: pointer;
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  transform-origin: center;
+
+  padding: 1rem 2.2rem;
+  background-color: transparent;
+  font: inherit;
+
+  border: none;
+  border-radius: var(--border-radius);
+  transform: scale(calc(1 + (var(--active, 0) * 0.08)));
+
+  transition: transform var(--transition);
+}
+
+.gift-sparkle-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 100%;
+  height: 100%;
+  background-color: var(--sage-950);
+
+  border-radius: var(--border-radius);
+  box-shadow:
+    inset 0 0.5px rgb(250 245 226 / 60%),
+    inset 0 -1px 2px 0 rgb(0 0 0 / 60%),
+    0px 4px 14px -4px rgb(0 0 0 / calc(1 - var(--active, 0))),
+    0 0 0 calc(var(--active, 0) * 0.375rem) rgb(163 198 156 / 0.6);
+
+  transition: all var(--transition);
+  z-index: 0;
+}
+
+.gift-sparkle-btn::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 100%;
+  height: 100%;
+  background-color: rgb(140 174 134 / 0.75);
+  background-image:
+    radial-gradient(at 51% 89%, rgb(163 198 156 / 1) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgb(117 151 111 / 1) 0px, transparent 50%),
+    radial-gradient(at 22% 91%, rgb(117 151 111 / 1) 0px, transparent 50%);
+  background-position: top;
+
+  opacity: var(--active, 0);
+  border-radius: var(--border-radius);
+  transition: opacity var(--transition);
+  z-index: 2;
+}
+
+.gift-sparkle-btn:is(:hover, :focus-visible) {
+  --active: 1;
+}
+.gift-sparkle-btn:active {
+  transform: scale(1);
+}
+
+.gift-sparkle-btn__dots {
+  --size-border: calc(100% + 2px);
+
+  overflow: hidden;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: var(--size-border);
+  height: var(--size-border);
+  background-color: transparent;
+
+  border-radius: var(--border-radius);
+  z-index: -10;
+}
+
+.gift-sparkle-btn__dots::before {
+  content: "";
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: rotate(0deg);
+  transform-origin: left;
+
+  width: 100%;
+  height: 2rem;
+  background-color: var(--cream);
+
+  mask: linear-gradient(transparent 0%, white 120%);
+  animation: gift-sparkle-rotate 2s linear infinite;
+}
+
+@keyframes gift-sparkle-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.gift-sparkle-btn__icon {
+  position: relative;
+  z-index: 10;
+  width: 1.6rem;
+  flex-shrink: 0;
+}
+
+.gift-sparkle-btn__icon-path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform-origin: center;
+  color: var(--cream);
+}
+
+.gift-sparkle-btn:is(:hover, :focus) .gift-sparkle-btn__icon-path {
+  animation: gift-sparkle-path 1.5s linear 0.5s infinite;
+}
+
+.gift-sparkle-btn__icon-path:nth-child(1) {
+  --scale-path-1: 1.2;
+}
+.gift-sparkle-btn__icon-path:nth-child(2) {
+  --scale-path-2: 1.2;
+}
+.gift-sparkle-btn__icon-path:nth-child(3) {
+  --scale-path-3: 1.2;
+}
+
+@keyframes gift-sparkle-path {
+  0%,
+  34%,
+  71%,
+  100% {
+    transform: scale(1);
+  }
+  17% {
+    transform: scale(var(--scale-path-1, 1));
+  }
+  49% {
+    transform: scale(var(--scale-path-2, 1));
+  }
+  83% {
+    transform: scale(var(--scale-path-3, 1));
+  }
+}
+
+.gift-sparkle-btn__text {
+  position: relative;
+  z-index: 10;
+
+  background-image: linear-gradient(
+    90deg,
+    rgb(250 245 226 / 1) 0%,
+    rgb(250 245 226 / var(--active, 0)) 120%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .pin-ring,
+  .pin-ring--delayed {
+    animation: none;
+    opacity: 0;
+  }
+  .heart-toggle .svg-filled,
+  .heart-toggle .svg-celebrate,
+  .x-toggle.is-checked .x-mark {
+    animation: none;
+  }
+  .heart-toggle.is-checked .svg-celebrate {
+    display: none;
+  }
+  .gift-sparkle-btn__dots::before,
+  .gift-sparkle-btn:is(:hover, :focus) .gift-sparkle-btn__icon-path {
+    animation: none;
+  }
 }

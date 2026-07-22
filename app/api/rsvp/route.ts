@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export type RsvpPayload = {
-  nome: string;
-  presenca: "accept" | "decline";
-  restricoes_alimentares?: string;
+  convidados: string;
+  presenca: "Sim" | "Não";
   data_envio: string;
 };
 
 /**
  * POST /api/rsvp
- * Recebe os dados do formulário de RSVP e encaminha para o webhook (Make/Zapier)
- * configurado em RSVP_WEBHOOK_URL. O webhook adiciona uma linha no Google Sheets.
+ * Recebe os dados do formulário de RSVP (um ou mais convidados da mesma família
+ * em um único envio) e encaminha para o webhook configurado em RSVP_WEBHOOK_URL
+ * (Google Apps Script, Make ou Zapier), que adiciona uma linha no Google Sheets.
  */
 export async function POST(request: NextRequest) {
   const webhookUrl = process.env.RSVP_WEBHOOK_URL;
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       {
         error: "Webhook não configurado",
         detail:
-          "Defina RSVP_WEBHOOK_URL no .env.local com o link do webhook do Make ou Zapier.",
+          "Defina RSVP_WEBHOOK_URL no .env.local com o link do Apps Script/Make/Zapier.",
       },
       { status: 500 }
     );
@@ -36,22 +36,21 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { nome, presenca, restricoes_alimentares } = body as Record<
-    string,
-    unknown
-  >;
+  const { convidados, presenca } = body as Record<string, unknown>;
 
-  if (!nome || typeof nome !== "string" || !nome.trim()) {
+  const nomes = (Array.isArray(convidados) ? convidados : [])
+    .filter((n): n is string => typeof n === "string")
+    .map((n) => n.trim())
+    .filter(Boolean);
+
+  if (nomes.length === 0) {
     return NextResponse.json(
-      { error: "O campo nome é obrigatório." },
+      { error: "Informe ao menos o nome de um convidado." },
       { status: 400 }
     );
   }
 
-  if (
-    presenca !== "accept" &&
-    presenca !== "decline"
-  ) {
+  if (presenca !== "accept" && presenca !== "decline") {
     return NextResponse.json(
       { error: "Selecione se aceita ou não comparecer." },
       { status: 400 }
@@ -59,18 +58,12 @@ export async function POST(request: NextRequest) {
   }
 
   const payload: RsvpPayload = {
-    nome: nome.trim(),
-    presenca,
-    data_envio: new Date().toISOString(),
+    convidados: nomes.join(", "),
+    presenca: presenca === "accept" ? "Sim" : "Não",
+    data_envio: new Date().toLocaleString("pt-BR", {
+      timeZone: "America/Sao_Paulo",
+    }),
   };
-
-  if (
-    restricoes_alimentares != null &&
-    typeof restricoes_alimentares === "string" &&
-    restricoes_alimentares.trim()
-  ) {
-    payload.restricoes_alimentares = restricoes_alimentares.trim();
-  }
 
   try {
     const res = await fetch(webhookUrl, {
