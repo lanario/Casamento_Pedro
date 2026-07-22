@@ -59,7 +59,7 @@ export default function InfoSection() {
     <section
       ref={ref}
       aria-label="Informações do casamento"
-      className="mx-auto max-w-2xl px-6 py-20 text-center md:py-28"
+      className="mx-auto max-w-2xl px-6 pt-8 pb-20 text-center md:pt-12 md:pb-28"
     >
       <VerseArc
         quote={WEDDING.blessingVerse.quote}

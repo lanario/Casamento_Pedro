@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Great_Vibes, Quicksand } from "next/font/google";
+import { Great_Vibes, Cinzel } from "next/font/google";
 import { WEDDING_META } from "@/lib/wedding";
 import "./globals.css";
 
@@ -10,7 +10,7 @@ const scriptFont = Great_Vibes({
   display: "swap",
 });
 
-const sansFont = Quicksand({
+const sansFont = Cinzel({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
