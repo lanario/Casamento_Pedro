@@ -55,7 +55,7 @@ export default function SiteFooter() {
         />
         <p
           className="mt-4 whitespace-nowrap font-script"
-          style={{ fontSize: "clamp(1.6rem, 7vw, 2.25rem)" }}
+          style={{ fontSize: "min(7vw, 2.25rem)" }}
         >
           {WEDDING.couple.display}
         </p>

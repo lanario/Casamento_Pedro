@@ -126,7 +126,6 @@ const SmoothScrollHeroBackground: React.FC<
       <motion.div
         className="absolute inset-0 bg-[#6B805B]"
         style={{
-          inset: "-1px",
           clipPath,
           willChange: "transform, opacity",
         }}

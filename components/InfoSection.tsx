@@ -69,7 +69,7 @@ export default function InfoSection() {
       <h2
         data-reveal
         className="mt-6 whitespace-nowrap font-script leading-tight text-sage-900"
-        style={{ fontSize: "clamp(1.9rem, 9vw, 4.5rem)" }}
+        style={{ fontSize: "min(8vw, 4rem)" }}
       >
         {WEDDING.couple.display}
       </h2>
@@ -77,9 +77,12 @@ export default function InfoSection() {
       <p
         data-reveal
         className="mt-6 whitespace-nowrap px-2 font-bold uppercase text-sage-700"
+        // O letter-spacing em vw era o maior vilão: com 35 caracteres,
+        // 1vw de espaçamento sozinho somava 35vw de largura. Agora ambos
+        // encolhem com a tela e não têm piso em rem.
         style={{
-          fontSize: "clamp(0.55rem, 2.6vw, 0.875rem)",
-          letterSpacing: "clamp(0.05em, 1vw, 0.3em)",
+          fontSize: "min(2.1vw, 0.875rem)",
+          letterSpacing: "min(0.5vw, 0.3em)",
         }}
       >
         {WEDDING.blessing}

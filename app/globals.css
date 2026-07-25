@@ -16,6 +16,21 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Trava qualquer arrasto horizontal da página.
+   `overflow-x: hidden` no body sozinho não é confiável em navegadores
+   mobile, então clipamos também no html. `clip` vem depois de `hidden`
+   como progressive enhancement: navegadores antigos ficam no `hidden`, e
+   os atuais usam `clip`, que não cria um scroll container e portanto não
+   quebra o `position: sticky` do hero.
+   `overscroll-behavior-x` remove o arrasto elástico lateral. */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+}
+
 body {
   background-color: var(--cream);
   color: var(--sage-900);

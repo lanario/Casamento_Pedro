@@ -61,7 +61,9 @@ function HeroOverlay() {
       >
         <h1
           className="whitespace-nowrap font-script leading-tight drop-shadow-lg"
-          style={{ fontSize: "clamp(1.9rem, 9vw, 4.5rem)" }}
+          // min() em vez de clamp(): sem piso em rem, a linha única sempre
+          // encolhe junto com a viewport e nunca alarga a página.
+          style={{ fontSize: "min(8vw, 4rem)" }}
         >
           {WEDDING.couple.display}
         </h1>
