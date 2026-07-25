@@ -2,6 +2,7 @@ import SiteLogo from "@/components/SiteLogo";
 import HeroSection from "@/components/HeroSection";
 import InfoSection from "@/components/InfoSection";
 import GuestManualSection from "@/components/GuestManualSection";
+import DressCodeSection from "@/components/DressCodeSection";
 import GiftListSection from "@/components/GiftListSection";
 import RsvpSection from "@/components/RsvpSection";
 import LocationSection from "@/components/LocationSection";
@@ -14,6 +15,7 @@ export default function HomePage() {
       <HeroSection />
       <InfoSection />
       <GuestManualSection />
+      <DressCodeSection />
       <GiftListSection />
       <RsvpSection />
       <LocationSection />

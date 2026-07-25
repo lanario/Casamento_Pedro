@@ -28,7 +28,7 @@ export default function SiteFooter() {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: "url(/dorio.png)",
+            backgroundImage: "url(/casal_2.jpeg)",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",

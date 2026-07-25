@@ -94,8 +94,8 @@ export default function HeroSection() {
     <section id="topo" aria-label="Abertura do convite">
       <SmoothScrollHero
         scrollHeight={SCROLL_HEIGHT}
-        desktopImage="/casal.jpeg"
-        mobileImage="/casal.jpeg"
+        desktopImage="/casal_3.jpeg"
+        mobileImage="/casal_3.jpeg"
         initialClipPercentage={25}
         finalClipPercentage={75}
         backgroundPosition="center 20%"

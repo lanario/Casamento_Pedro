@@ -70,6 +70,18 @@ export const WEDDING = {
       "Não saia sem se despedir dos noivos",
     ],
   },
+  dressCode: {
+    title: "Traje sugerido",
+    dress: "Esporte fino",
+    avoidTitle: "Pedimos apenas que evitem as seguintes cores",
+    colors: [
+      { name: "Verde oliva", hex: "#75976F", note: "Cor das madrinhas" },
+      { name: "Branco", hex: "#FFFFFF", note: "Cor da noiva" },
+    ],
+    comfort:
+      "Vistam-se da forma que se sentirem mais confortáveis, mas não se esqueçam que vão dançar bastante",
+    disclaimer: "Cores meramente ilustrativas",
+  },
   location: {
     title: "Localização",
     subtitle: "Encontre o caminho até nós",
