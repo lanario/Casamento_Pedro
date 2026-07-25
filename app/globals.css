@@ -27,10 +27,50 @@ html {
    remove o arrasto elástico lateral. */
 body {
   overscroll-behavior-x: none;
+  overscroll-behavior-y: none;
   background-color: var(--cream);
   color: var(--sage-900);
   @apply selection:bg-sage-300 selection:text-white;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Hero — alturas de viewport.
+   `lvh` é a altura MÁXIMA da viewport (barra de endereços do navegador
+   recolhida). Com `vh`/`dvh` sobrava uma faixa creme abaixo da foto no
+   mobile: ao rolar, a barra do navegador some, a viewport visível cresce e
+   o bloco `sticky` — dimensionado pela viewport menor — parava de cobrir a
+   tela inteira. Dimensionando pelo maior tamanho possível, nunca falta
+   altura; no máximo sobra um pedaço escondido atrás da barra.
+   A primeira declaração de cada regra é o fallback para navegadores sem
+   suporte às unidades novas. */
+.hero-track {
+  height: calc(var(--hero-scroll) + 100vh);
+  height: calc(var(--hero-scroll) + 100lvh);
+}
+
+.hero-viewport {
+  height: 100vh;
+  height: 100lvh;
+}
+
+/* Caixa do conteúdo sobreposto: ocupa a MESMA altura do hero (`lvh`).
+   Com `dvh` ela terminava antes da base do bloco sempre que a barra do
+   navegador estava na tela, e o corte do gradiente de leitura aparecia
+   como uma faixa creme no rodapé durante a animação de scroll.
+   Para o texto continuar longe da barra do navegador, `--hero-browser-ui`
+   guarda a altura dela (0 quando recolhida) e é somada ao `bottom` dos
+   elementos ancorados embaixo — assim o gradiente cobre a tela inteira sem
+   encurtar a caixa. */
+.hero-overlay-safe {
+  --hero-browser-ui: 0px;
+  height: 100vh;
+  height: 100lvh;
+}
+
+@supports (height: 100dvh) {
+  .hero-overlay-safe {
+    --hero-browser-ui: calc(100lvh - 100dvh);
+  }
 }
 
 /* Pin pulsante da seção de localização */

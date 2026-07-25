@@ -94,7 +94,7 @@ const SmoothScrollHeroBackground: React.FC<
   );
 
   return (
-    <div className="sticky top-0 h-screen w-full">
+    <div className="hero-viewport sticky top-0 w-full">
       {/* Margens: a própria foto do casal esticada por trás, tingida de
           verde, para não parecer uma faixa de cor sólida separada. */}
       <motion.div
@@ -157,7 +157,13 @@ const SmoothScrollHeroBackground: React.FC<
           }}
         />
       </motion.div>
-      {children}
+      {/* Conteúdo sobreposto: mesma altura do hero, para que o gradiente de
+          leitura chegue até a base do bloco (uma caixa menor deixava um
+          corte visível como faixa creme no rodapé). O texto ancorado
+          embaixo se afasta da barra do navegador via `--hero-browser-ui`. */}
+      <div className="hero-overlay-safe pointer-events-none absolute inset-x-0 top-0">
+        {children}
+      </div>
     </div>
   );
 };
@@ -178,8 +184,8 @@ const SmoothScrollHero: React.FC<iISmoothScrollHeroProps> = ({
 }) => {
   return (
     <div
-      style={{ height: `calc(${scrollHeight}px + 100vh)` }}
-      className="relative w-full"
+      style={{ "--hero-scroll": `${scrollHeight}px` } as React.CSSProperties}
+      className="hero-track relative w-full"
     >
       <SmoothScrollHeroBackground
         scrollHeight={scrollHeight}

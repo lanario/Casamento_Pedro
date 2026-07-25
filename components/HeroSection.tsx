@@ -56,8 +56,12 @@ function HeroOverlay() {
 
       {/* Nomes + data revelados conforme o scroll */}
       <motion.div
-        style={{ opacity: titleOpacity, y: titleY }}
-        className="pointer-events-none absolute inset-x-0 bottom-16 flex flex-col items-center px-6 text-center text-cream"
+        style={{
+          opacity: titleOpacity,
+          y: titleY,
+          bottom: "calc(4rem + var(--hero-browser-ui, 0px))",
+        }}
+        className="pointer-events-none absolute inset-x-0 flex flex-col items-center px-6 text-center text-cream"
       >
         <h1
           className="whitespace-nowrap font-script leading-tight drop-shadow-lg"
@@ -74,8 +78,11 @@ function HeroOverlay() {
 
       {/* Indicador de scroll, some ao rolar */}
       <motion.div
-        style={{ opacity: hintOpacity }}
-        className="pointer-events-none absolute inset-x-0 bottom-6 flex flex-col items-center gap-1 text-cream/90"
+        style={{
+          opacity: hintOpacity,
+          bottom: "calc(1.5rem + var(--hero-browser-ui, 0px))",
+        }}
+        className="pointer-events-none absolute inset-x-0 flex flex-col items-center gap-1 text-cream/90"
       >
         <span className="text-xs font-medium tracking-[0.25em] uppercase">
           Deslize
