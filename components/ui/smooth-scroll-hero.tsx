@@ -75,10 +75,14 @@ const SmoothScrollHeroBackground: React.FC<
   // background-size "cover" já se adapta corretamente a qualquer proporção
   // de tela, então o zoom por transform não desloca o enquadramento vertical
   // como acontecia antes em telas mais largas (tablet, Fold).
+  // O mínimo fica em 1.02 (nunca exatamente 1) para sempre sobrar uma
+  // pequena margem de imagem além da borda: evita a falha de composição
+  // do Chrome/Android que deixa uma linha/faixa clara aparecer numa das
+  // bordas durante a animação de scroll (clip-path + transform juntos).
   const bgZoomScale = useTransform(
     scrollY,
     [0, scrollHeight + 500],
-    [1.35, 1],
+    [1.35, 1.02],
   );
 
   // Margens ao redor da foto: começam no creme da página e ficam verdes
@@ -122,6 +126,7 @@ const SmoothScrollHeroBackground: React.FC<
       <motion.div
         className="absolute inset-0 bg-[#6B805B]"
         style={{
+          inset: "-1px",
           clipPath,
           willChange: "transform, opacity",
         }}
@@ -135,6 +140,8 @@ const SmoothScrollHeroBackground: React.FC<
             backgroundPosition,
             backgroundRepeat: "no-repeat",
             scale: bgZoomScale,
+            willChange: "transform",
+            backfaceVisibility: "hidden",
           }}
         />
         {/* Desktop background */}
@@ -146,6 +153,8 @@ const SmoothScrollHeroBackground: React.FC<
             backgroundPosition,
             backgroundRepeat: "no-repeat",
             scale: bgZoomScale,
+            willChange: "transform",
+            backfaceVisibility: "hidden",
           }}
         />
       </motion.div>
