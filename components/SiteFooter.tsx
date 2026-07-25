@@ -12,8 +12,8 @@ export default function SiteFooter() {
     offset: ["start end", "end end"],
   });
 
-  const bgY = useTransform(scrollYProgress, [0, 1], ["-12%", "8%"]);
-  const bgScale = useTransform(scrollYProgress, [0, 1], [1.15, 1.02]);
+  const bgY = useTransform(scrollYProgress, [0, 1], ["-4%", "4%"]);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1.15, 1.08]);
 
   return (
     <footer
@@ -22,7 +22,7 @@ export default function SiteFooter() {
     >
       <motion.div
         aria-hidden
-        className="absolute inset-0"
+        className="absolute -inset-y-[10%] inset-x-0"
         style={{ y: bgY, scale: bgScale }}
       >
         <div
@@ -35,7 +35,7 @@ export default function SiteFooter() {
           }}
         />
       </motion.div>
-      <div className="absolute inset-0 bg-sage-950/80" />
+      <div className="absolute inset-0 bg-sage-950/45" />
 
       <div className="relative">
         <div

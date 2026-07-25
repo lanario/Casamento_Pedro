@@ -29,20 +29,31 @@ export const WEDDING = {
   opening: "Convidam para a celebração do seu casamento",
   date: {
     /** ISO com fuso de Brasília */
-    iso: "2026-09-25T19:00:00-03:00",
+    iso: "2026-09-25T19:30:00-03:00",
     weekdayLine: "Sexta-feira, 25 de setembro",
     yearLine: "Dois mil e vinte e seis",
-    timeLine: "Às 19h",
+    timeLine: "Às 19h30",
     short: "25 . 09 . 2026",
   },
-  venue: {
-    name: "Cerimônia e recepção",
-    street: "Rua Paulo de Frontin, 36",
-    neighborhood: "Andrade de Araujo",
-    full: "Rua Paulo de Frontin, 36 — Andrade de Araujo",
-    mapsUrl:
-      "https://www.google.com/maps/search/?api=1&query=Rua+Paulo+de+Frontin+36+Andrade+de+Araujo",
-    note: "Jantar e festa em seguida à cerimônia, no mesmo local.",
+  ceremony: {
+    slug: "cerimonia",
+    label: "Cerimônia",
+    name: "Paróquia Santa Rita de Cássia",
+    street: "Rua Professor Eduardo Vianna, 551",
+    neighborhood: "Carolina, Nova Iguaçu — RJ",
+    full: "Rua Professor Eduardo Vianna, 551 — Carolina, Nova Iguaçu — RJ",
+    time: "19h30",
+    mapsUrl: "https://maps.app.goo.gl/V3x28cyVVkErZihe9",
+  },
+  reception: {
+    slug: "festa",
+    label: "Festa",
+    name: "Espaço 277",
+    street: "Rua do Imperador, 277",
+    neighborhood: "Viga, Nova Iguaçu — RJ",
+    full: "Rua do Imperador, 277 — Viga, Nova Iguaçu — RJ",
+    time: "21h",
+    mapsUrl: "https://maps.app.goo.gl/e8YXAWwjyV2pmqSd7",
   },
   rsvp: {
     title: "Confirmação de convite",

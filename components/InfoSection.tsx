@@ -131,25 +131,39 @@ export default function InfoSection() {
           </p>
         </div>
 
-        <div className="border-t border-sage-300/50 pt-5">
+        <a
+          href={`#localizacao-${WEDDING.ceremony.slug}`}
+          className="block border-t border-sage-300/50 pt-5 transition hover:opacity-70"
+        >
           <p className="text-[11px] font-semibold tracking-[0.2em] uppercase text-sage-400">
-            Horário
+            {WEDDING.ceremony.label}
           </p>
           <p className="mt-1.5 flex items-center justify-center gap-2 text-lg font-bold text-sage-900">
             <Clock3 className="h-5 w-5 text-sage-500" aria-hidden />
-            {WEDDING.date.timeLine}
-          </p>
-        </div>
-
-        <div className="border-t border-sage-300/50 pt-5">
-          <p className="text-[11px] font-semibold tracking-[0.2em] uppercase text-sage-400">
-            Onde
+            Às {WEDDING.ceremony.time}
           </p>
           <p className="mt-1.5 flex items-center justify-center gap-2 text-sm font-bold text-sage-900">
             <MapPin className="h-4 w-4 text-sage-500 shrink-0" aria-hidden />
-            {WEDDING.venue.full}
+            {WEDDING.ceremony.full}
           </p>
-        </div>
+        </a>
+
+        <a
+          href={`#localizacao-${WEDDING.reception.slug}`}
+          className="block border-t border-sage-300/50 pt-5 transition hover:opacity-70"
+        >
+          <p className="text-[11px] font-semibold tracking-[0.2em] uppercase text-sage-400">
+            {WEDDING.reception.label}
+          </p>
+          <p className="mt-1.5 flex items-center justify-center gap-2 text-lg font-bold text-sage-900">
+            <Clock3 className="h-5 w-5 text-sage-500" aria-hidden />
+            Às {WEDDING.reception.time}
+          </p>
+          <p className="mt-1.5 flex items-center justify-center gap-2 text-sm font-bold text-sage-900">
+            <MapPin className="h-4 w-4 text-sage-500 shrink-0" aria-hidden />
+            {WEDDING.reception.full}
+          </p>
+        </a>
       </div>
 
       <div data-reveal className="mt-12">

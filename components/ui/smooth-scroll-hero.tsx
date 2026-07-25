@@ -71,10 +71,14 @@ const SmoothScrollHeroBackground: React.FC<
 
   const clipPath = useMotionTemplate`polygon(${clipStart}% ${clipStart}%, ${clipEnd}% ${clipStart}%, ${clipEnd}% ${clipEnd}%, ${clipStart}% ${clipEnd}%)`;
 
-  const backgroundSize = useTransform(
+  // Zoom aplicado via transform (não via background-size em % da largura):
+  // background-size "cover" já se adapta corretamente a qualquer proporção
+  // de tela, então o zoom por transform não desloca o enquadramento vertical
+  // como acontecia antes em telas mais largas (tablet, Fold).
+  const bgZoomScale = useTransform(
     scrollY,
     [0, scrollHeight + 500],
-    ["170%", "100%"],
+    [1.35, 1],
   );
 
   // Margens ao redor da foto: começam no creme da página e ficam verdes
@@ -127,9 +131,10 @@ const SmoothScrollHeroBackground: React.FC<
           className="absolute inset-0 md:hidden"
           style={{
             backgroundImage: `url(${mobileImage})`,
-            backgroundSize,
+            backgroundSize: "cover",
             backgroundPosition,
             backgroundRepeat: "no-repeat",
+            scale: bgZoomScale,
           }}
         />
         {/* Desktop background */}
@@ -137,9 +142,10 @@ const SmoothScrollHeroBackground: React.FC<
           className="absolute inset-0 hidden md:block"
           style={{
             backgroundImage: `url(${desktopImage})`,
-            backgroundSize,
+            backgroundSize: "cover",
             backgroundPosition,
             backgroundRepeat: "no-repeat",
+            scale: bgZoomScale,
           }}
         />
       </motion.div>

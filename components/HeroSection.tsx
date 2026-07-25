@@ -98,7 +98,7 @@ export default function HeroSection() {
         mobileImage="/casal_3.jpeg"
         initialClipPercentage={25}
         finalClipPercentage={75}
-        backgroundPosition="center 20%"
+        backgroundPosition="center 50%"
       >
         <HeroOverlay />
       </SmoothScrollHero>
