@@ -18,12 +18,12 @@ export const WEDDING = {
     groom: {
       name: "Pedro Lucas",
       role: "Noivo",
-      names: ["Anderson Costa de Freitas", "Juliana de Fátima de Ornelas"],
+      names: ["Anderson Costa de Freitas", "Juliana de Fátima de Ornelas Araújo de Freitas"],
     },
     bride: {
       name: "Marcelle",
       role: "Noiva",
-      names: ["Marcelo de Câmara Albuquerque", "Marcia Vieira dos Santos Albuquerque"],
+      names: ["Marcelo da Camara Albuquerque", "Marcia Vieira dos Santos Albuquerque"],
     },
   },
   opening: "Convidam para a celebração do seu casamento",
