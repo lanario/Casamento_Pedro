@@ -46,11 +46,30 @@ body {
 .hero-track {
   height: calc(var(--hero-scroll) + 100vh);
   height: calc(var(--hero-scroll) + 100lvh);
+  /* Recorta a sangria (`.hero-bleed`) que passa da base do bloco `sticky`.
+     Precisa ser `clip`, NUNCA `hidden`: `clip` não cria contêiner de
+     rolagem, então o `position: sticky` do hero continua ancorado na
+     viewport e a animação de revelação segue funcionando. Como a caixa
+     termina exatamente onde a animação acaba, a sangria some no mesmo
+     instante em que a seção de informações começa. */
+  overflow: clip;
 }
 
 .hero-viewport {
   height: 100vh;
   height: 100lvh;
+}
+
+/* Sangria abaixo do hero.
+   Nem toda barra de navegador é medida por `lvh`: em webviews (Instagram,
+   WhatsApp) e em alguns navegadores mobile, a barra fica por cima da
+   viewport sem entrar na conta, e o bloco `sticky` acaba mais curto que a
+   tela visível — o creme da página aparecia como uma faixa abaixo da foto
+   já no início do scroll. Esta faixa continua o degradê escuro do rodapé
+   do hero e cobre qualquer folga, seja qual for a origem dela. */
+.hero-bleed {
+  height: 30vh;
+  height: 30lvh;
 }
 
 /* Caixa do conteúdo sobreposto: ocupa a MESMA altura do hero (`lvh`).

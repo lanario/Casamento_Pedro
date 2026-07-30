@@ -93,8 +93,24 @@ const SmoothScrollHeroBackground: React.FC<
     [0, 1],
   );
 
+  // Cor da sangria abaixo do hero (ver `.hero-bleed` no globals.css).
+  // Reproduz o que existe na última linha do hero — o véu `sage-950/80` do
+  // degradê de leitura sobre o creme da página no início e sobre a foto
+  // tingida depois que as margens verdes entram — para a emenda não
+  // aparecer como uma faixa de cor diferente.
+  const bleedColor = useTransform(
+    scrollY,
+    [scrollHeight * 0.15, scrollHeight * 0.6],
+    ["#576e4e", "#3a5034"],
+  );
+
   return (
     <div className="hero-viewport sticky top-0 w-full">
+      <motion.div
+        aria-hidden
+        className="hero-bleed pointer-events-none absolute inset-x-0 top-full"
+        style={{ backgroundColor: bleedColor }}
+      />
       {/* Margens: a própria foto do casal esticada por trás, tingida de
           verde, para não parecer uma faixa de cor sólida separada. */}
       <motion.div
