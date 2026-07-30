@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CalendarHeart, Clock3, MapPin } from "lucide-react";
 import { WEDDING } from "@/lib/wedding";
 import { useGsapReveal } from "@/lib/useGsapReveal";
@@ -17,6 +17,66 @@ function getCountdown(): Countdown | null {
     min: Math.floor(diff / 60_000) % 60,
     seg: Math.floor(diff / 1_000) % 60,
   };
+}
+
+const PARENTS_MIN_FONT_PX = 7;
+const PARENTS_MAX_FONT_PX = 16;
+const PARENTS_FIT_MARGIN = 0.99;
+
+/**
+ * Mede a largura real dos nomes (fonte Cinzel/negrito/tracking já aplicados)
+ * e calcula o maior tamanho de fonte comum que ainda cabe em uma linha só na
+ * coluna mais estreita — encontra o limite real em vez de um valor fixo,
+ * então continua correto se os nomes ou a largura da tela mudarem.
+ */
+function useParentsFontSize(
+  containerRef: React.RefObject<HTMLDivElement>,
+  names: readonly string[],
+) {
+  const [fontSize, setFontSize] = useState(PARENTS_MIN_FONT_PX);
+
+  useEffect(() => {
+    function recalc() {
+      const container = containerRef.current;
+      if (!container) return;
+      const column = container.querySelector<HTMLElement>("[data-parent-col]");
+      if (!column) return;
+      const columnWidth = column.clientWidth;
+      if (columnWidth <= 0) return;
+
+      const REF = 100;
+      const measurer = document.createElement("span");
+      measurer.className = "font-bold tracking-tight";
+      measurer.style.position = "fixed";
+      measurer.style.top = "-9999px";
+      measurer.style.left = "-9999px";
+      measurer.style.visibility = "hidden";
+      measurer.style.whiteSpace = "nowrap";
+      measurer.style.pointerEvents = "none";
+      measurer.style.fontFamily = "var(--font-sans)";
+      measurer.style.fontSize = `${REF}px`;
+      document.body.appendChild(measurer);
+
+      let maxFit = PARENTS_MAX_FONT_PX;
+      for (const name of names) {
+        measurer.textContent = name;
+        const widthAtRef = measurer.getBoundingClientRect().width;
+        const fit = (columnWidth / widthAtRef) * REF * PARENTS_FIT_MARGIN;
+        if (fit < maxFit) maxFit = fit;
+      }
+
+      document.body.removeChild(measurer);
+
+      const clamped = Math.max(PARENTS_MIN_FONT_PX, Math.min(PARENTS_MAX_FONT_PX, maxFit));
+      setFontSize(Math.round(clamped * 10) / 10);
+    }
+
+    recalc();
+    window.addEventListener("resize", recalc);
+    return () => window.removeEventListener("resize", recalc);
+  }, [containerRef, names]);
+
+  return fontSize;
 }
 
 function CountdownChips() {
@@ -52,8 +112,17 @@ function CountdownChips() {
   );
 }
 
+const PARENTS_NAMES = [
+  WEDDING.parents.bride.names[0],
+  WEDDING.parents.bride.names[1],
+  WEDDING.parents.groom.names[0],
+  WEDDING.parents.groom.names[1],
+] as const;
+
 export default function InfoSection() {
   const ref = useGsapReveal<HTMLElement>(0.12);
+  const parentsGridRef = useRef<HTMLDivElement>(null);
+  const parentsFontSize = useParentsFontSize(parentsGridRef, PARENTS_NAMES);
 
   return (
     <section
@@ -88,29 +157,45 @@ export default function InfoSection() {
         {WEDDING.blessing}
       </p>
 
-      <div data-reveal className="mx-auto mt-8 grid max-w-md grid-cols-2 divide-x divide-sage-300/60">
-        <div className="text-center">
+      <div
+        ref={parentsGridRef}
+        data-reveal
+        className="mx-auto mt-8 grid max-w-md grid-cols-2 gap-x-3 divide-x divide-sage-300/60"
+      >
+        <div data-parent-col className="text-center">
           <p className="flex items-center justify-center gap-1.5 text-[11px] font-semibold tracking-[0.2em] uppercase text-sage-400">
             <span className="h-1 w-1 rounded-full bg-sage-400" aria-hidden />
             Pais da noiva
           </p>
-          <p className="mt-1.5 text-sm font-bold text-sage-900">
+          <p
+            className="mt-1.5 whitespace-nowrap leading-snug tracking-tight font-bold text-sage-900"
+            style={{ fontSize: parentsFontSize }}
+          >
             {WEDDING.parents.bride.names[0]}
           </p>
-          <p className="text-sm font-bold text-sage-900">
+          <p
+            className="whitespace-nowrap leading-snug tracking-tight font-bold text-sage-900"
+            style={{ fontSize: parentsFontSize }}
+          >
             {WEDDING.parents.bride.names[1]}
           </p>
         </div>
 
-        <div className="text-center">
+        <div data-parent-col className="text-center">
           <p className="flex items-center justify-center gap-1.5 text-[11px] font-semibold tracking-[0.2em] uppercase text-sage-400">
             <span className="h-1 w-1 rounded-full bg-sage-400" aria-hidden />
             Pais do noivo
           </p>
-          <p className="mt-1.5 text-sm font-bold text-sage-900">
+          <p
+            className="mt-1.5 whitespace-nowrap leading-snug tracking-tight font-bold text-sage-900"
+            style={{ fontSize: parentsFontSize }}
+          >
             {WEDDING.parents.groom.names[0]}
           </p>
-          <p className="text-sm font-bold text-sage-900">
+          <p
+            className="whitespace-nowrap leading-snug tracking-tight font-bold text-sage-900"
+            style={{ fontSize: parentsFontSize }}
+          >
             {WEDDING.parents.groom.names[1]}
           </p>
         </div>

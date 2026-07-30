@@ -18,21 +18,21 @@ export const WEDDING = {
     groom: {
       name: "Pedro Lucas",
       role: "Noivo",
-      names: ["Anderson Freitas", "Juliana Freitas"],
+      names: ["Anderson Costa de Freitas", "Juliana de Fátima de Ornelas"],
     },
     bride: {
       name: "Marcelle",
       role: "Noiva",
-      names: ["Marcelo Albuquerque", "Marcia Albuquerque"],
+      names: ["Marcelo de Câmara Albuquerque", "Marcia Vieira dos Santos Albuquerque"],
     },
   },
   opening: "Convidam para a celebração do seu casamento",
   date: {
     /** ISO com fuso de Brasília */
-    iso: "2026-09-25T19:30:00-03:00",
+    iso: "2026-09-25T19:00:00-03:00",
     weekdayLine: "Sexta-feira, 25 de setembro",
     yearLine: "Dois mil e vinte e seis",
-    timeLine: "Às 19h30",
+    timeLine: "Às 19h",
     short: "25 . 09 . 2026",
   },
   ceremony: {
@@ -42,7 +42,7 @@ export const WEDDING = {
     street: "Rua Professor Eduardo Vianna, 551",
     neighborhood: "Carolina, Nova Iguaçu — RJ",
     full: "Rua Professor Eduardo Vianna, 551 — Carolina, Nova Iguaçu — RJ",
-    time: "19h30",
+    time: "19h",
     mapsUrl: "https://maps.app.goo.gl/V3x28cyVVkErZihe9",
   },
   reception: {
