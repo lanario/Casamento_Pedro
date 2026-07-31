@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { CalendarHeart, Clock3, MapPin } from "lucide-react";
 import { WEDDING } from "@/lib/wedding";
 import { useGsapReveal } from "@/lib/useGsapReveal";
+import { useFitTextSize } from "@/lib/useFitTextSize";
 import VerseArc from "@/components/VerseArc";
 
 type Countdown = { dias: number; horas: number; min: number; seg: number };
@@ -19,65 +20,7 @@ function getCountdown(): Countdown | null {
   };
 }
 
-const PARENTS_MIN_FONT_PX = 7;
-const PARENTS_MAX_FONT_PX = 16;
-const PARENTS_FIT_MARGIN = 0.99;
-
-/**
- * Mede a largura real dos nomes (fonte Cinzel/negrito/tracking já aplicados)
- * e calcula o maior tamanho de fonte comum que ainda cabe em uma linha só na
- * coluna mais estreita — encontra o limite real em vez de um valor fixo,
- * então continua correto se os nomes ou a largura da tela mudarem.
- */
-function useParentsFontSize(
-  containerRef: React.RefObject<HTMLDivElement>,
-  names: readonly string[],
-) {
-  const [fontSize, setFontSize] = useState(PARENTS_MIN_FONT_PX);
-
-  useEffect(() => {
-    function recalc() {
-      const container = containerRef.current;
-      if (!container) return;
-      const column = container.querySelector<HTMLElement>("[data-parent-col]");
-      if (!column) return;
-      const columnWidth = column.clientWidth;
-      if (columnWidth <= 0) return;
-
-      const REF = 100;
-      const measurer = document.createElement("span");
-      measurer.className = "font-bold tracking-tight";
-      measurer.style.position = "fixed";
-      measurer.style.top = "-9999px";
-      measurer.style.left = "-9999px";
-      measurer.style.visibility = "hidden";
-      measurer.style.whiteSpace = "nowrap";
-      measurer.style.pointerEvents = "none";
-      measurer.style.fontFamily = "var(--font-sans)";
-      measurer.style.fontSize = `${REF}px`;
-      document.body.appendChild(measurer);
-
-      let maxFit = PARENTS_MAX_FONT_PX;
-      for (const name of names) {
-        measurer.textContent = name;
-        const widthAtRef = measurer.getBoundingClientRect().width;
-        const fit = (columnWidth / widthAtRef) * REF * PARENTS_FIT_MARGIN;
-        if (fit < maxFit) maxFit = fit;
-      }
-
-      document.body.removeChild(measurer);
-
-      const clamped = Math.max(PARENTS_MIN_FONT_PX, Math.min(PARENTS_MAX_FONT_PX, maxFit));
-      setFontSize(Math.round(clamped * 10) / 10);
-    }
-
-    recalc();
-    window.addEventListener("resize", recalc);
-    return () => window.removeEventListener("resize", recalc);
-  }, [containerRef, names]);
-
-  return fontSize;
-}
+const PARENTS_FIT_OPTIONS = { min: 7, max: 16, margin: 0.99 };
 
 function CountdownChips() {
   // Inicia vazio para evitar divergência de hidratação
@@ -122,7 +65,12 @@ const PARENTS_NAMES = [
 export default function InfoSection() {
   const ref = useGsapReveal<HTMLElement>(0.12);
   const parentsGridRef = useRef<HTMLDivElement>(null);
-  const parentsFontSize = useParentsFontSize(parentsGridRef, PARENTS_NAMES);
+  const parentsFontSize = useFitTextSize(
+    parentsGridRef,
+    "[data-parent-col]",
+    PARENTS_NAMES,
+    PARENTS_FIT_OPTIONS,
+  );
 
   return (
     <section

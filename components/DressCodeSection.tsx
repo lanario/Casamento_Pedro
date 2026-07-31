@@ -1,7 +1,9 @@
 "use client";
 
+import { useRef } from "react";
 import { WEDDING } from "@/lib/wedding";
 import { useGsapReveal } from "@/lib/useGsapReveal";
+import { useFitTextSize } from "@/lib/useFitTextSize";
 
 /**
  * As ilustrações são servidas como <img> comum, sem next/image: o fundo delas já
@@ -19,9 +21,19 @@ const ROWS = [
   },
 ];
 
+const COLOR_NAMES = WEDDING.dressCode.colors.map((color) => color.name);
+const COLOR_NAME_FIT_OPTIONS = { min: 8, max: 13, margin: 0.95 };
+
 export default function DressCodeSection() {
   const ref = useGsapReveal<HTMLElement>(0.1);
   const { dressCode } = WEDDING;
+  const colorsRowRef = useRef<HTMLDivElement>(null);
+  const colorNameFontSize = useFitTextSize(
+    colorsRowRef,
+    "[data-color-col]",
+    COLOR_NAMES,
+    COLOR_NAME_FIT_OPTIONS,
+  );
 
   return (
     <section
@@ -47,18 +59,29 @@ export default function DressCodeSection() {
         {dressCode.avoidTitle}
       </p>
 
-      <div data-reveal className="mt-8 flex justify-center gap-12 md:gap-20">
+      <div
+        ref={colorsRowRef}
+        data-reveal
+        className="mt-8 flex flex-nowrap justify-center gap-x-2 sm:gap-x-8 md:gap-x-16"
+      >
         {dressCode.colors.map((color) => (
-          <div key={color.name} className="flex flex-col items-center">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sage-500">
+          <div
+            key={color.name}
+            data-color-col
+            className="flex w-14 flex-col items-center sm:w-24 md:w-28"
+          >
+            <span
+              className="whitespace-nowrap font-bold uppercase tracking-tight text-sage-500 sm:tracking-[0.2em]"
+              style={{ fontSize: colorNameFontSize }}
+            >
               {color.name}
             </span>
             <span
               aria-hidden
-              className="mt-3 h-24 w-24 rounded-full shadow-md ring-1 ring-sage-900/15 md:h-28 md:w-28"
+              className="mt-2 h-14 w-14 rounded-full shadow-md ring-1 ring-sage-900/15 sm:mt-3 sm:h-24 sm:w-24 md:h-28 md:w-28"
               style={{ backgroundColor: color.hex }}
             />
-            <span className="mt-3 text-xs font-bold uppercase tracking-[0.14em] text-sage-700">
+            <span className="mt-2 text-[9px] font-bold uppercase leading-tight tracking-tight text-sage-700 sm:mt-3 sm:text-xs sm:tracking-[0.14em]">
               {color.note}
             </span>
           </div>

@@ -86,8 +86,10 @@ export const WEDDING = {
     dress: "Esporte fino",
     avoidTitle: "Pedimos apenas que evitem as seguintes cores",
     colors: [
-      { name: "Verde oliva", hex: "#75976F", note: "Cor das madrinhas" },
-      { name: "Branco", hex: "#FFFFFF", note: "Cor da noiva" },
+      { name: "Verde oliva", hex: "#75976F", note: "Madrinhas" },
+      { name: "Branco", hex: "#FFFFFF", note: "Noiva" },
+      { name: "Dourado", hex: "#E8BD24", note: "Mãe do noivo" },
+      { name: "Azul", hex: "#11114E", note: "Mãe da noiva" },
     ],
     comfort:
       "Vistam-se da forma que se sentirem mais confortáveis, mas não se esqueçam que vão dançar bastante",
