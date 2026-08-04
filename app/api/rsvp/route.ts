@@ -9,8 +9,10 @@ export type RsvpPayload = {
 /**
  * POST /api/rsvp
  * Recebe os dados do formulário de RSVP (um ou mais convidados da mesma família
- * em um único envio) e encaminha para o webhook configurado em RSVP_WEBHOOK_URL
- * (Google Apps Script, Make ou Zapier), que adiciona uma linha no Google Sheets.
+ * em um único envio) e encaminha ao webhook configurado em RSVP_WEBHOOK_URL
+ * (Google Apps Script, Make ou Zapier) uma requisição por convidado, para que
+ * cada nome vire uma linha própria no Google Sheets em vez de ficar tudo
+ * concatenado numa única célula.
  */
 export async function POST(request: NextRequest) {
   const webhookUrl = process.env.RSVP_WEBHOOK_URL;
@@ -57,30 +59,35 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const payload: RsvpPayload = {
-    convidados: nomes.join(", "),
-    presenca: presenca === "accept" ? "Sim" : "Não",
-    data_envio: new Date().toLocaleString("pt-BR", {
-      timeZone: "America/Sao_Paulo",
-    }),
-  };
+  const presencaValue = presenca === "accept" ? "Sim" : "Não";
+  const dataEnvio = new Date().toLocaleString("pt-BR", {
+    timeZone: "America/Sao_Paulo",
+  });
 
   try {
-    const res = await fetch(webhookUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    for (const nome of nomes) {
+      const payload: RsvpPayload = {
+        convidados: nome,
+        presenca: presencaValue,
+        data_envio: dataEnvio,
+      };
 
-    if (!res.ok) {
-      const text = await res.text();
-      return NextResponse.json(
-        {
-          error: "Falha ao enviar para o webhook",
-          detail: res.statusText || text.slice(0, 200),
-        },
-        { status: 502 }
-      );
+      const res = await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        return NextResponse.json(
+          {
+            error: "Falha ao enviar para o webhook",
+            detail: res.statusText || text.slice(0, 200),
+          },
+          { status: 502 }
+        );
+      }
     }
 
     return NextResponse.json({ success: true });
